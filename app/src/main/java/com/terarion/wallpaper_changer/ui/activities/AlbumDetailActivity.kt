@@ -2,6 +2,7 @@ package com.terarion.wallpaper_changer.ui.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.GridLayoutManager
@@ -14,13 +15,14 @@ import com.squareup.picasso.Picasso
 import com.terarion.wallpaper_changer.R
 import com.terarion.wallpaper_changer.WallpaperChangerReceiver
 import com.terarion.wallpaper_changer.model.DataHolder
+import com.terarion.wallpaper_changer.model.Image
 import com.terarion.wallpaper_changer.util.delegators.view
 
 /**
  * Created by david on 8/14/16.
  */
 class AlbumDetailActivity() : AppCompatActivity() {
-    val data = DataHolder()
+    var data = DataHolder()
     val name by lazy { intent.getStringExtra("title") }
     val album by lazy { data.albums.find { it.name == name }!! }
 
@@ -41,6 +43,16 @@ class AlbumDetailActivity() : AppCompatActivity() {
                 intent.putExtra("file", image.file.absolutePath)
                 sendBroadcast(intent)
             }
+
+            holder.image.setOnLongClickListener {
+                AlertDialog.Builder(this@AlbumDetailActivity)
+                        .setTitle("Remove image")
+                        .setMessage("Are you sure you wish to remove this image?")
+                        .setPositiveButton("Yes", { a, b -> remove(image) })
+                        .setNegativeButton("No", { a, b -> /* pass */ })
+                        .show()
+                        .let { true }
+            }
         }
 
         override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int) =
@@ -48,7 +60,12 @@ class AlbumDetailActivity() : AppCompatActivity() {
                         .inflate(R.layout.fragment_image, parent, false))
 
         override fun getItemCount() = album.images.size
+    }
 
+    fun remove(image: Image) {
+        image.delete()
+        data = DataHolder()
+        recycler.adapter = DataAdapter()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

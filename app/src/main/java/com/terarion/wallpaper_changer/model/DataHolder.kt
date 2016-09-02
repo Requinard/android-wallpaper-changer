@@ -39,5 +39,9 @@ class Album(val directory: File) {
     val name = directory.name
 }
 
-class Image(val file: File)
+class Image(val file: File){
+    fun delete(){
+        file.delete()
+    }
+}
 
