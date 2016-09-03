@@ -2,6 +2,8 @@ package com.terarion.wallpaper_changer.ui.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.support.design.widget.CoordinatorLayout
+import android.support.design.widget.Snackbar
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DefaultItemAnimator
@@ -27,6 +29,7 @@ class AlbumDetailActivity() : AppCompatActivity() {
     val album by lazy { data.albums.find { it.name == name }!! }
 
     val recycler by view(RecyclerView::class.java)
+    val coordinator by view(CoordinatorLayout::class.java)
 
     inner class ImageHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val image by view(ImageView::class.java)
@@ -41,6 +44,7 @@ class AlbumDetailActivity() : AppCompatActivity() {
             holder.image.setOnClickListener {
                 val intent = Intent(this@AlbumDetailActivity, WallpaperChangerReceiver::class.java)
                 intent.putExtra("file", image.file.absolutePath)
+                Snackbar.make(coordinator, "Setting wallpaper ...", Snackbar.LENGTH_SHORT).show()
                 sendBroadcast(intent)
             }
 
@@ -48,7 +52,7 @@ class AlbumDetailActivity() : AppCompatActivity() {
                 AlertDialog.Builder(this@AlbumDetailActivity)
                         .setTitle("Remove image")
                         .setMessage("Are you sure you wish to remove this image?")
-                        .setPositiveButton("Yes", { a, b -> remove(image) })
+                        .setPositiveButton("Yes", { a, b -> remove(image); Snackbar.make(coordinator, "Deleted the file", Snackbar.LENGTH_LONG).show() })
                         .setNegativeButton("No", { a, b -> /* pass */ })
                         .show()
                         .let { true }

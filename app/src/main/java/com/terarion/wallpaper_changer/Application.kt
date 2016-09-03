@@ -1,6 +1,7 @@
 package com.terarion.wallpaper_changer
 
 import android.app.Application
+import com.karumi.dexter.Dexter
 import net.danlew.android.joda.JodaTimeAndroid
 
 /**
@@ -9,6 +10,7 @@ import net.danlew.android.joda.JodaTimeAndroid
 class CustomApplication : Application() {
     override fun onCreate() {
         super.onCreate()
+        Dexter.initialize(this)
         JodaTimeAndroid.init(this)
     }
 }

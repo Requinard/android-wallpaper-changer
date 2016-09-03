@@ -1,5 +1,6 @@
 package com.terarion.wallpaper_changer.ui.activities
 
+import android.Manifest
 import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
@@ -19,6 +20,9 @@ import android.view.MenuItem
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Spinner
+import com.karumi.dexter.Dexter
+import com.karumi.dexter.MultiplePermissionsReport
+import com.karumi.dexter.listener.multi.EmptyMultiplePermissionsListener
 import com.terarion.wallpaper_changer.R
 import com.terarion.wallpaper_changer.WallpaperChangerReceiver
 import com.terarion.wallpaper_changer.model.DataHolder
@@ -29,7 +33,7 @@ import java.io.File
 class MainActivity : AppCompatActivity() {
     val REQUEST_CODE = 100
     val FOLDER_NAME = "WallpaperChanger"
-    val data = DataHolder()
+    val data by lazy { DataHolder() }
 
     var directories = emptyList<String>()
     val filespinner by view(Spinner::class.java)
@@ -51,9 +55,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_main)
         val toolbar = findViewById(R.id.toolbar) as Toolbar?
         setSupportActionBar(toolbar)
+
+        Dexter.initialize(this)
 
         fab.setOnClickListener {
             val intent = Intent()
@@ -156,29 +163,35 @@ class MainActivity : AppCompatActivity() {
     private fun moveToFolder(uri: Uri, directory: String) {
         val filePathColumn = arrayOf<String>(MediaStore.Images.Media.DATA)
 
+        Dexter.checkPermissions(object : EmptyMultiplePermissionsListener() {
+            override fun onPermissionsChecked(report: MultiplePermissionsReport) {
+                if (report.areAllPermissionsGranted()) {
+                    object : AsyncTask<Unit, File, File>() {
+                        override fun doInBackground(vararg params: Unit?): File {
+                            // Create the directory
+                            val directory = File(Environment.getExternalStorageDirectory(), "${FOLDER_NAME}/$directory")
+
+                            directory.mkdirs()
+
+                            val cursor = contentResolver.openInputStream(uri)
+
+                            val fileOld = File(uri.path)
+                            val fileNew = File(directory, "${fileOld.hashCode()}.png")
+
+                            cursor.copyTo(fileNew.outputStream())
+
+                            return fileNew
+                        }
+
+                        override fun onPostExecute(result: File?) {
+                            Snackbar.make(fab, "Saved image!", Snackbar.LENGTH_SHORT)
+                        }
+                    }.execute()
+                }
+            }
+        }, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+
         Log.d(tag, "Adding $uri to $directory")
-
-        object : AsyncTask<Unit, File, File>() {
-            override fun doInBackground(vararg params: Unit?): File {
-                // Create the directory
-                val directory = File(Environment.getExternalStorageDirectory(), "${FOLDER_NAME}/$directory")
-
-                directory.mkdirs()
-
-                val cursor = contentResolver.openInputStream(uri)
-
-                val fileOld = File(uri.path)
-                val fileNew = File(directory, "${fileOld.hashCode()}.png")
-
-                cursor.copyTo(fileNew.outputStream())
-
-                return fileNew
-            }
-
-            override fun onPostExecute(result: File?) {
-                Snackbar.make(fab, "Saved image!", Snackbar.LENGTH_SHORT)
-            }
-        }.execute()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
