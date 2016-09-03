@@ -23,6 +23,7 @@ import android.widget.Spinner
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.listener.multi.EmptyMultiplePermissionsListener
+import com.karumi.dexter.listener.single.EmptyPermissionListener
 import com.terarion.wallpaper_changer.R
 import com.terarion.wallpaper_changer.WallpaperChangerReceiver
 import com.terarion.wallpaper_changer.model.DataHolder
@@ -62,6 +63,9 @@ class MainActivity : AppCompatActivity() {
 
         Dexter.initialize(this)
 
+        Dexter.checkPermission(object: EmptyPermissionListener(){
+        }, Manifest.permission.READ_EXTERNAL_STORAGE)
+
         fab.setOnClickListener {
             val intent = Intent()
             intent.setType("image/*")
@@ -76,6 +80,7 @@ class MainActivity : AppCompatActivity() {
             val editText = EditText(this)
             AlertDialog.Builder(this)
                     .setView(editText)
+                    .setTitle("Create a new album")
                     .setPositiveButton("Create", { a, b ->
                         File(Environment.getExternalStorageDirectory(), "${FOLDER_NAME}/${editText.text.toString()}").mkdirs()
                         data.update()

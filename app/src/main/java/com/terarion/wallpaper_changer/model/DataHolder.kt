@@ -26,8 +26,12 @@ class DataHolder : Serializable {
     private val s = "DATA"
 
     fun update() {
-        albums = BASE_DIR.listFiles().filter { it.isDirectory }.map { Album(it) }
-        Log.d("DATA", "Loaded ${albums.size} albums")
+        try {
+            albums = BASE_DIR.listFiles().filter { it.isDirectory }.map { Album(it) }
+            Log.d("DATA", "Loaded ${albums.size} albums")
+        } catch (throwable: Throwable){
+            Log.d("DATA", "No albums yet")
+        }
     }
 }
 
