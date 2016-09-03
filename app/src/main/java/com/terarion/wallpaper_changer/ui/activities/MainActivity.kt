@@ -93,11 +93,17 @@ class MainActivity : AppCompatActivity() {
     private fun handleIncomingIntent(intent: Intent) {
         val uri = intent.getParcelableExtra<Uri>(Intent.EXTRA_STREAM)
         Log.d(tag, "Received uri ${uri.toString()}")
+
+        val data = DataHolder()
+
+        Log.d(tag, "Directories ${data.albumNames.count()}")
         val spinner = Spinner(this)
-        spinner.adapter = object : ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, directories) {}
+
+
+        spinner.adapter = object : ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, data.albumNames) {}
         AlertDialog.Builder(this)
                 .setView(spinner)
-                .setPositiveButton("Add", { a, b -> Log.d(tag, "accepted") })
+                .setPositiveButton("Add", { a, b -> moveToFolder(intent.getParcelableExtra(Intent.EXTRA_STREAM), data.albumNames[spinner.selectedItemPosition]) })
                 .setNegativeButton("Cancel", { a, b -> a.cancel() })
                 .show()
     }
@@ -124,28 +130,33 @@ class MainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
             if (data.data != null) {
-                val uri = data.data
+                if (data.clipData == null) {
+                    val uri = data.data
 
-                Log.d(tag, data.toString())
+                    Log.d(tag, data.toString())
 
-                moveToFolder(uri, directories[filespinner.selectedItemPosition])
-            } else if (data.clipData != null) {
-                val clipData = data.clipData
+                    moveToFolder(uri, directories[filespinner.selectedItemPosition])
+                } else {
+                    val clipData = data.clipData
 
-                var i = 0
+                    var i = 0
 
-                while (i != clipData.itemCount) {
-                    moveToFolder(clipData.getItemAt(i).uri, directories[filespinner.selectedItemPosition])
-                    i++
+                    while (i != clipData.itemCount) {
+                        moveToFolder(clipData.getItemAt(i).uri, directories[filespinner.selectedItemPosition])
+                        i++
+                    }
                 }
-            } else {
-                Log.d("lol", "didn't find anything")
             }
+        } else {
+            Log.d("lol", "didn't find anything")
         }
     }
 
+
     private fun moveToFolder(uri: Uri, directory: String) {
         val filePathColumn = arrayOf<String>(MediaStore.Images.Media.DATA)
+
+        Log.d(tag, "Adding $uri to $directory")
 
         object : AsyncTask<Unit, File, File>() {
             override fun doInBackground(vararg params: Unit?): File {

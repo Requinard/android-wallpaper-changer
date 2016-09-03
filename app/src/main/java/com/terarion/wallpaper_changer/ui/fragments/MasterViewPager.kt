@@ -1,6 +1,7 @@
 package com.terarion.wallpaper_changer.ui.fragments
 
 import android.os.Bundle
+import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
@@ -21,10 +22,14 @@ class MasterViewPager() : Fragment() {
         override fun getCount(): Int = 2
 
         override fun getItem(position: Int): Fragment = when (position) {
-            0 -> SettingsFragment()
-            else -> AlbumRecyclerFragment()
+            0 -> AlbumRecyclerFragment()
+            else -> SettingsFragment()
         }
 
+        override fun getPageTitle(position: Int) = when(position){
+            0 -> "Albums"
+            else -> "Settings"
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
@@ -34,5 +39,7 @@ class MasterViewPager() : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewpager.adapter = ViewPagerAdapter(fragmentManager)
+
+        (activity.findViewById(R.id.tabs) as TabLayout).setupWithViewPager(viewpager)
     }
 }
