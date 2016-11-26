@@ -1,6 +1,5 @@
 package com.terarion.wallpaper_changer
 
-import android.Manifest
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.app.WallpaperManager
@@ -9,9 +8,6 @@ import android.content.Context
 import android.content.Intent
 import android.preference.PreferenceManager
 import android.util.Log
-import com.karumi.dexter.Dexter
-import com.karumi.dexter.listener.PermissionGrantedResponse
-import com.karumi.dexter.listener.single.EmptyPermissionListener
 import com.terarion.wallpaper_changer.model.DataHolder
 import com.terarion.wallpaper_changer.model.Image
 import org.joda.time.DateTime
@@ -32,15 +28,12 @@ class WallpaperChangerReceiver() : BroadcastReceiver() {
 
         Log.d(tag, "Next image is ${nextImage.file.name}")
 
-        Dexter.checkPermission(object : EmptyPermissionListener() {
-            override fun onPermissionGranted(response: PermissionGrantedResponse?) {
-                val wallpaperManager = WallpaperManager.getInstance(context)
 
-                wallpaperManager.setStream(nextImage.file.inputStream())
+        val wallpaperManager = WallpaperManager.getInstance(context)
 
-                WallpaperChangerReceiver().schedule(context)
-            }
-        }, Manifest.permission.SET_WALLPAPER)
+        wallpaperManager.setStream(nextImage.file.inputStream())
+
+        WallpaperChangerReceiver().schedule(context)
     }
 
     private val tag = "Wakeup service"

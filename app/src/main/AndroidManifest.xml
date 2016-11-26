@@ -14,6 +14,7 @@
         <activity
                 android:name=".ui.activities.MainActivity"
                 android:label="@string/app_name"
+                android:launchMode="singleInstance"
                 android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -31,12 +32,22 @@
         </activity>
         <activity android:name=".ui.activities.AlbumDetailActivity"/>
         <receiver android:name=".WallpaperChangerReceiver"/>
-        <receiver android:name=".ui.widgets.ChangeWallpaperWidgetProvider">
+        <receiver android:name=".ui.widgets.ChangeWallpaperWidgetProvider"
+                  android:label="Next Wallpaper">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>
             <meta-data android:name="android.appwidget.provider"
                        android:resource="@xml/change_wallpaper_widget"/>
+        </receiver>
+        <receiver android:name=".InvertAlbumReceiver"/>
+        <receiver android:name=".ui.widgets.InvertAlbumWidgetProvider"
+                  android:label="Invert Albums">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider"
+                       android:resource="@xml/inver_albums_widget"/>
         </receiver>
     </application>
 
