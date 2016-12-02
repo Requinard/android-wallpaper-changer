@@ -8,8 +8,11 @@ import android.content.Context
 import android.content.Intent
 import android.preference.PreferenceManager
 import android.util.Log
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.terarion.wallpaper_changer.model.DataHolder
 import com.terarion.wallpaper_changer.model.Image
+import com.terarion.wallpaper_changer.store.HistoryStore
 import org.joda.time.DateTime
 import java.io.File
 import java.util.*
@@ -29,17 +32,11 @@ class NextReceiver() : BroadcastReceiver() {
 
         val wallpaperManager = WallpaperManager.getInstance(context)
 
-        saveToLog(nextImage)
+        HistoryStore().add(nextImage)
 
         wallpaperManager.setStream(nextImage.file.inputStream())
 
         NextReceiver().schedule(context)
-    }
-
-    private fun saveToLog(image: Image) {
-        val history = File(DataHolder.BASE_DIR, "history.json")
-
-
     }
 
     private val tag = "Wakeup service"
