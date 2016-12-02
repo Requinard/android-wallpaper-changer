@@ -12,6 +12,7 @@ import com.terarion.wallpaper_changer.receivers.InvertReceiver
 import com.terarion.wallpaper_changer.R
 import com.terarion.wallpaper_changer.receivers.PlayPauseReceiver
 import com.terarion.wallpaper_changer.receivers.NextReceiver
+import com.terarion.wallpaper_changer.receivers.PreviousReceiver
 
 /**
  * Created by david on 12/2/16.
@@ -37,6 +38,7 @@ class BigWidget : AppWidgetProvider(){
         remoteViews.setOnClickPendingIntent(R.id.widget_invert, getPendingIntent(context, INVERT))
         remoteViews.setOnClickPendingIntent(R.id.widget_next, getPendingIntent(context, NEXT))
         remoteViews.setOnClickPendingIntent(R.id.widget_pauseplay, getPendingIntent(context, PLAYPAUSE))
+        remoteViews.setOnClickPendingIntent(R.id.widget_previous, getPendingIntent(context, PREVIOUS))
 
         appWidgetManager.updateAppWidget(watchWidget, remoteViews)
 
@@ -56,6 +58,7 @@ class BigWidget : AppWidgetProvider(){
                 INVERT -> Intent(context, InvertReceiver::class.java)
                 NEXT -> Intent(context, NextReceiver::class.java)
                 PLAYPAUSE -> Intent(context, PlayPauseReceiver::class.java)
+                PREVIOUS -> Intent(context, PreviousReceiver::class.java)
                 else -> Intent(context, NextReceiver::class.java)
             }
 

@@ -13,7 +13,7 @@ import android.widget.Toast
  */
 class PlayPauseReceiver : BroadcastReceiver() {
     val TAG = "Receiver PlayPause"
-    override fun onReceive(context: Context, p1: Intent?) {
+    override fun onReceive(context: Context, intent: Intent?) {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
         Log.d(TAG, "Toggling wallpaper switching!")

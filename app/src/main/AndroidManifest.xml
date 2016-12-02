@@ -36,6 +36,7 @@
         <receiver android:name=".receivers.NextReceiver"/>
         <receiver android:name=".receivers.InvertReceiver"/>
         <receiver android:name=".receivers.PlayPauseReceiver"/>
+        <receiver android:name=".receivers.PreviousReceiver"/>
 
         <!-- Widgets -->
         <receiver android:name=".ui.widgets.ChangeWallpaperWidgetProvider"

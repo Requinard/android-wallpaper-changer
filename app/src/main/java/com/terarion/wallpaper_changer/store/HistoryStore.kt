@@ -20,6 +20,7 @@ class HistoryStore {
     fun add(image: Image) {
         Log.d(TAG, "Adding ${image} to history")
         var items = read()
+                .filter { it.file.name != image.file.name }
         Log.d(TAG, "History has ${items.size} items")
         items = listOf(image) + items
         write(items.limit(50))
@@ -27,9 +28,9 @@ class HistoryStore {
 
     fun revert(): Image? {
         Log.d(TAG, "Retrieving last image from history for reverting")
-        var items = read()
+        val items = read()
 
-        var item = items.firstOrNull()
+        val item = items.firstOrNull()
 
         write(items.tail())
 
