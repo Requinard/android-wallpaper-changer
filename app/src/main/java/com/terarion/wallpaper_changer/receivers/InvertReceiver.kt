@@ -19,6 +19,6 @@ class InvertReceiver : BroadcastReceiver() {
         data.albums.forEach { it.enabled = !it.enabled }
         Log.d(LOG_TAG, "Inverted albums")
 
-        Toast.makeText(context, "Inverted the album selection!", Toast.LENGTH_LONG)
+        Toast.makeText(context, "Inverted the album selection!", Toast.LENGTH_SHORT).show()
     }
 }

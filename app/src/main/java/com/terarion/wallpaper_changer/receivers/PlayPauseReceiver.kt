@@ -27,9 +27,9 @@ class PlayPauseReceiver : BroadcastReceiver() {
 
         Log.d(TAG, "Wallpaper switching is now set to ${!current}")
         if(!current) {
-            Toast.makeText(context, "Automatic switching enabled!", Toast.LENGTH_LONG)
+            Toast.makeText(context, "Automatic switching enabled!", Toast.LENGTH_SHORT).show()
         } else{
-            Toast.makeText(context, "Automatic switching disabled!", Toast.LENGTH_LONG)
+            Toast.makeText(context, "Automatic switching disabled!", Toast.LENGTH_SHORT).show()
         }
     }
 
