@@ -6,6 +6,7 @@ import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.preference.PreferenceManager
 import android.util.Log
 import android.widget.RemoteViews
 import com.terarion.wallpaper_changer.receivers.InvertReceiver
@@ -34,6 +35,12 @@ class BigWidget : AppWidgetProvider(){
 
         val remoteViews = RemoteViews(context.packageName, R.layout.widget_big)
         val watchWidget = ComponentName(context, BigWidget::class.java)
+
+        if(PreferenceManager.getDefaultSharedPreferences(context).getBoolean("enabled", false)){
+            remoteViews.setTextViewText(R.id.widget_pauseplay, "pause")
+        } else {
+            remoteViews.setTextViewText(R.id.widget_pauseplay, "play")
+        }
 
         remoteViews.setOnClickPendingIntent(R.id.widget_invert, getPendingIntent(context, INVERT))
         remoteViews.setOnClickPendingIntent(R.id.widget_next, getPendingIntent(context, NEXT))

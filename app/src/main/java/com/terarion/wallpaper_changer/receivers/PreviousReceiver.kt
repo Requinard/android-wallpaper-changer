@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import android.widget.Toast
 import com.terarion.wallpaper_changer.store.HistoryStore
 
 /**
@@ -24,6 +25,7 @@ class PreviousReceiver : BroadcastReceiver() {
             NextReceiver().schedule(context)
 
             Log.d(TAG, "Succesfully reverted image")
+            Toast.makeText(context, "Went back to previous image!", Toast.LENGTH_SHORT)
         } else {
             Log.d(TAG, "Failed to revert wallpaper image: None found!")
         }

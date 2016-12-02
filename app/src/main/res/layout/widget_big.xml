@@ -8,20 +8,24 @@
             android:layout_height="match_parent"
             android:id="@+id/widget_invert"
             android:layout_weight="5"
+            style="@style/AppTheme.Button"
             android:text="Invert"/>
     <Button android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/widget_previous"
+            style="@style/AppTheme.Button"
             android:layout_weight="5"
             android:text="Previous"/>
     <Button android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/widget_pauseplay"
+            style="@style/AppTheme.Button"
             android:layout_weight="5"
             android:text="Play"/>
     <Button android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/widget_next"
+            style="@style/AppTheme.Button"
             android:layout_weight="5"
             android:text="Next"/>
 
