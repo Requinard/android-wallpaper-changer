@@ -1,4 +1,4 @@
-package com.terarion.wallpaper_changer
+package com.terarion.wallpaper_changer.receivers
 
 import android.app.AlarmManager
 import android.app.PendingIntent
@@ -15,12 +15,11 @@ import java.io.File
 import java.util.*
 
 /**
- * Created by david on 8/15/16.
+ * Changes wallpaper to next
  */
-class WallpaperChangerReceiver() : BroadcastReceiver() {
+class NextReceiver() : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         Log.d(tag, "Woken up for intent")
-
 
         val random = Random()
         val data = DataHolder()
@@ -28,12 +27,19 @@ class WallpaperChangerReceiver() : BroadcastReceiver() {
 
         Log.d(tag, "Next image is ${nextImage.file.name}")
 
-
         val wallpaperManager = WallpaperManager.getInstance(context)
+
+        saveToLog(nextImage)
 
         wallpaperManager.setStream(nextImage.file.inputStream())
 
-        WallpaperChangerReceiver().schedule(context)
+        NextReceiver().schedule(context)
+    }
+
+    private fun saveToLog(image: Image) {
+        val history = File(DataHolder.BASE_DIR, "history.json")
+
+
     }
 
     private val tag = "Wakeup service"
@@ -50,7 +56,7 @@ class WallpaperChangerReceiver() : BroadcastReceiver() {
         Log.d(tag, "Scheduling wakeup in $minutes_offset minutes")
 
         // Now we set the intent to execute
-        val intent = Intent(context, WallpaperChangerReceiver::class.java)
+        val intent = Intent(context, NextReceiver::class.java)
 
         val pendingIntent = PendingIntent.getBroadcast(context, 101, intent, 0)
 
@@ -69,7 +75,7 @@ class WallpaperChangerReceiver() : BroadcastReceiver() {
     }
 
     fun cancel(context: Context) {
-        val intent = Intent(context, WallpaperChangerReceiver::class.java)
+        val intent = Intent(context, NextReceiver::class.java)
 
         val pendingIntent = PendingIntent.getBroadcast(context, 101, intent, 0)
 

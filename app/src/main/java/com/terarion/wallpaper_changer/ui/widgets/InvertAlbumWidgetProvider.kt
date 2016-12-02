@@ -8,9 +8,9 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.widget.RemoteViews
-import com.terarion.wallpaper_changer.InvertAlbumReceiver
+import com.terarion.wallpaper_changer.receivers.InvertReceiver
 import com.terarion.wallpaper_changer.R
-import com.terarion.wallpaper_changer.WallpaperChangerReceiver
+import com.terarion.wallpaper_changer.receivers.NextReceiver
 
 /**
  * Created by david on 9/28/16.
@@ -32,7 +32,7 @@ class InvertAlbumWidgetProvider : AppWidgetProvider() {
 
         Log.d(tag, "Received pending intent")
         if (intent.action == name) {
-            val intent = Intent(context, InvertAlbumReceiver::class.java)
+            val intent = Intent(context, InvertReceiver::class.java)
             Log.d(tag, "broadcasting wallpaper change")
 
             context.sendBroadcast(intent)

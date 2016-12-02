@@ -9,7 +9,7 @@ import android.content.Intent
 import android.util.Log
 import android.widget.RemoteViews
 import com.terarion.wallpaper_changer.R
-import com.terarion.wallpaper_changer.WallpaperChangerReceiver
+import com.terarion.wallpaper_changer.receivers.NextReceiver
 
 /**
  * Created by david on 8/15/16.
@@ -31,7 +31,7 @@ class ChangeWallpaperWidgetProvider : AppWidgetProvider() {
 
         Log.d(tag, "Received pending intent")
         if (intent.action == name) {
-            val intent = Intent(context, WallpaperChangerReceiver::class.java)
+            val intent = Intent(context, NextReceiver::class.java)
             Log.d(tag, "broadcasting wallpaper change")
 
             context.sendBroadcast(intent)

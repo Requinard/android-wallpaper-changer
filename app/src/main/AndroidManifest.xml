@@ -31,7 +31,13 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.activities.AlbumDetailActivity"/>
-        <receiver android:name=".WallpaperChangerReceiver"/>
+
+        <!-- Intent Receivers -->
+        <receiver android:name=".receivers.NextReceiver"/>
+        <receiver android:name=".receivers.InvertReceiver"/>
+        <receiver android:name=".receivers.PlayPauseReceiver"/>
+
+        <!-- Widgets -->
         <receiver android:name=".ui.widgets.ChangeWallpaperWidgetProvider"
                   android:label="Next Wallpaper">
             <intent-filter>
@@ -40,7 +46,7 @@
             <meta-data android:name="android.appwidget.provider"
                        android:resource="@xml/change_wallpaper_widget"/>
         </receiver>
-        <receiver android:name=".InvertAlbumReceiver"/>
+
         <receiver android:name=".ui.widgets.InvertAlbumWidgetProvider"
                   android:label="Invert Albums">
             <intent-filter>
@@ -48,6 +54,18 @@
             </intent-filter>
             <meta-data android:name="android.appwidget.provider"
                        android:resource="@xml/inver_albums_widget"/>
+        </receiver>
+        <receiver android:name=".ui.widgets.BigWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="ui.widgets.BigWidget.NEXT"/>
+                <action android:name="ui.widgets.BigWidget.PLAYPAUSE"/>
+                <action android:name="ui.widgets.BigWidget.PREVIOUS"/>
+                <action android:name="ui.widgets.BigWidget.INVERT"/>
+            </intent-filter>
+            <meta-data
+                    android:name="android.appwidget.provider"
+                    android:resource="@xml/big_widget"/>
         </receiver>
     </application>
 

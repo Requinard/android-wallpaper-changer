@@ -25,7 +25,7 @@ import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.listener.multi.EmptyMultiplePermissionsListener
 import com.karumi.dexter.listener.single.EmptyPermissionListener
 import com.terarion.wallpaper_changer.R
-import com.terarion.wallpaper_changer.WallpaperChangerReceiver
+import com.terarion.wallpaper_changer.receivers.NextReceiver
 import com.terarion.wallpaper_changer.model.DataHolder
 import com.terarion.wallpaper_changer.ui.fragments.MasterViewPager
 import com.terarion.wallpaper_changer.util.delegators.view
@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
             Log.d(tag, "Preference ${key} has changed")
             // If the enabled setting has been enabled, schedule a pape change
             if (preferences.getBoolean("enabled", false) == true) {
-                WallpaperChangerReceiver().schedule(this@MainActivity)
+                NextReceiver().schedule(this@MainActivity)
             }
         }
 
@@ -73,7 +73,7 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
             startActivityForResult(Intent.createChooser(intent, "Select Picture"), REQUEST_CODE)
 
-//            sendBroadcast(Intent(this, WallpaperChangerReceiver::class.java))
+//            sendBroadcast(Intent(this, NextReceiver::class.java))
         }
 
         fab2.setOnClickListener {
@@ -88,7 +88,7 @@ class MainActivity : AppCompatActivity() {
                     })
                     .setNegativeButton("Cancel", { a, b -> a.cancel() })
                     .show()
-            WallpaperChangerReceiver().schedule(this)
+            NextReceiver().schedule(this)
         }
 
         if (intent.hasExtra(Intent.EXTRA_STREAM)) {

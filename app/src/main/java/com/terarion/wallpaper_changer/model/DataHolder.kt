@@ -10,10 +10,10 @@ import java.io.Serializable
  */
 class DataHolder : Serializable {
     companion object {
-
+        val BASE_DIR = File(Environment.getExternalStorageDirectory(), "WallpaperChanger")
     }
 
-    val BASE_DIR = File(Environment.getExternalStorageDirectory(), "WallpaperChanger")
+
     var albums = emptyList<Album>()
     val albumNames by lazy { albums.map { it.name } }
 
@@ -29,7 +29,7 @@ class DataHolder : Serializable {
         try {
             albums = BASE_DIR.listFiles().filter { it.isDirectory }.map { Album(it) }
             Log.d("DATA", "Loaded ${albums.size} albums")
-        } catch (throwable: Throwable){
+        } catch (throwable: Throwable) {
             Log.d("DATA", "No albums yet")
         }
     }
@@ -43,8 +43,8 @@ class Album(val directory: File) {
     val name = directory.name
 }
 
-class Image(val file: File){
-    fun delete(){
+class Image(val file: File) {
+    fun delete() {
         file.delete()
     }
 }

@@ -15,7 +15,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import com.squareup.picasso.Picasso
 import com.terarion.wallpaper_changer.R
-import com.terarion.wallpaper_changer.WallpaperChangerReceiver
+import com.terarion.wallpaper_changer.receivers.NextReceiver
 import com.terarion.wallpaper_changer.model.DataHolder
 import com.terarion.wallpaper_changer.model.Image
 import com.terarion.wallpaper_changer.util.delegators.view
@@ -42,7 +42,7 @@ class AlbumDetailActivity() : AppCompatActivity() {
             Picasso.with(this@AlbumDetailActivity).load(image.file).into(holder.image)
 
             holder.image.setOnClickListener {
-                val intent = Intent(this@AlbumDetailActivity, WallpaperChangerReceiver::class.java)
+                val intent = Intent(this@AlbumDetailActivity, NextReceiver::class.java)
                 intent.putExtra("file", image.file.absolutePath)
                 Snackbar.make(coordinator, "Setting wallpaper ...", Snackbar.LENGTH_SHORT).show()
                 sendBroadcast(intent)

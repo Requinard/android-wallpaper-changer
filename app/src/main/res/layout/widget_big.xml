@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="horizontal"
+              android:weightSum="20"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <Button android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/widget_invert"
+            android:layout_weight="5"
+            android:text="Invert"/>
+    <Button android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/widget_previous"
+            android:layout_weight="5"
+            android:text="Previous"/>
+    <Button android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/widget_pauseplay"
+            android:layout_weight="5"
+            android:text="Play"/>
+    <Button android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/widget_next"
+            android:layout_weight="5"
+            android:text="Next"/>
+
+</LinearLayout>
